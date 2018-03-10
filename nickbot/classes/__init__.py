@@ -1,0 +1,1 @@
+import nickbot.classes.wrapper
