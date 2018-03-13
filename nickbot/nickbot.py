@@ -1,5 +1,6 @@
 from nickbot import classes
 from nickbot.classes.config import client
+from nickbot.classes.config import Config
 from nickbot.classes.commands import Commands
 from nickbot.classes.functions import Functions
 
@@ -16,6 +17,8 @@ class NickBot:
               'permissions=8'.format(client.user.id))
 
     async def message(message):
+        if message.channel.name == Config.admin_chan:
+            await Commands.admin(message)
         if message.content.startswith('.flag'):
             await Commands.flag(message)
 

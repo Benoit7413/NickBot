@@ -5,6 +5,7 @@ from nickbot.__version__ import __version__
 import asyncio
 from nickbot import classes
 from nickbot.classes.config import client
+from nickbot.classes.config import Config
 
 
 def main():
@@ -17,6 +18,6 @@ def main():
     print("Runing NickBot version : " + __version__)
     print("Considering performances, the inability to remove owner messages "
           "this bot only listen to administratives messages from "
-          "#nickboc_admin")
+          "#" + Config.admin_chan)
 
     client.run(os.environ["DISCORD_TOKEN"])

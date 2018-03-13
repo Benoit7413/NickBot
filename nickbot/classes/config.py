@@ -1,12 +1,29 @@
 import configparser
 import discord
+from .db import DbHandler
 
-global client
-client = discord.Client()
+global Config, client
 
 
-class Config(object):
+class ConfigHandler(object):
+
+    admin_chan = str("nickbot_admin")
 
     def __init__(self):
-        self.config = configparser.ConfigParser()
-#       self.config.read('config.ini')
+        self.__config = configparser.ConfigParser()
+        self.__config.read('/etc/nickbot')
+        self.db_msg = DbHandler.human_readable_return
+        self.__db = DbHandler(self.__config['REDIS'])
+
+    async def set(self, server, param, value):
+        return await self.__db.set(server.id, param, value)
+
+    async def get(self, server, param):
+        return await self.__db.get(server.id, param)
+
+    async def connected(self):
+        return await self.__db.is_connected()
+
+
+Config = ConfigHandler()
+client = discord.Client()
