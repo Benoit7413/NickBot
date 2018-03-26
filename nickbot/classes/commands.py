@@ -8,21 +8,27 @@ from .functions import Functions
 class Commands:
 
     async def flag(message):
-        if await Functions.ownerForbiden(message):
-            return False
         code = await Functions.rmPrefix(message.content)
         user = await client.get_user_info(message.author.id)
         if code is "" and message.author.nick is not None:
-            await client.change_nickname(message.author,
-                                         EmojiFlag.remove(message.author.nick))
+            await Functions.setNick(message,
+                                    EmojiFlag.remove(message.author.nick))
         elif message.author.nick is None:
-            await client.change_nickname(message.author,
-                                         EmojiFlag.add(user.name, code))
+            await Functions.setNick(message,
+                                    EmojiFlag.add(user.name, code))
         else:
-            await client.change_nickname(message.author,
-                                         EmojiFlag.change(
-                                             message.author.nick, code))
+            await Functions.setNick(message,
+                                    EmojiFlag.change(
+                                        message.author.nick, code))
         await client.delete_message(message)
+
+    async def penguin(message):
+        with open(await Functions.randomPicture('penguin'), 'rb') as f:
+            await client.send_file(message.channel, f)
+
+    async def curly(message):
+        with open(await Functions.randomPicture('curly'), 'rb') as f:
+            await client.send_file(message.channel, f)
 
     async def admin(message):
         params = await Functions.getParams(message.content)

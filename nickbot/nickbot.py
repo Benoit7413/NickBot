@@ -19,8 +19,14 @@ class NickBot:
     async def message(message):
         if message.channel.name == Config.admin_chan:
             await Commands.admin(message)
-        if message.content.startswith('.flag'):
-            await Commands.flag(message)
+        prefix = await Config.get(message.server, 'prefix')
+        if type(prefix) is str:
+            if message.content.startswith(prefix + 'flag'):
+                await Commands.flag(message)
+            if message.content.startswith(prefix + 'penguin'):
+                await Commands.penguin(message)
+            if message.content.startswith(prefix + 'curly'):
+                await Commands.curly(message)
 
     async def member_update(before, after):
         if after.nick is not None:
